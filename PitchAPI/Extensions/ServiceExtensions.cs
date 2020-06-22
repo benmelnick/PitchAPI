@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Contracts;
+using LoggerService;
 
 namespace PitchAPI.Extensions
 {
@@ -26,6 +28,13 @@ namespace PitchAPI.Extensions
             {
 
             });
+        }
+
+        public static void ConfigureLoggerService(this IServiceCollection services)
+        {
+            // create a singleton LoggerManager so we can re-use the service
+            // tell DI that whenever we ask for an ILoggerManager, return a LoggerManager
+            services.AddSingleton<ILoggerManager, LoggerManager>();
         }
     }
 }

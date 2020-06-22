@@ -11,8 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.HttpOverrides;
+using NLog;
 
 using PitchAPI.Extensions;
+using System.IO;
 
 namespace PitchAPI
 {
@@ -20,6 +22,8 @@ namespace PitchAPI
     {
         public Startup(IConfiguration configuration)
         {
+            // give NLog LogManager the config file
+            LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -32,6 +36,9 @@ namespace PitchAPI
             // call static configuration methods from ServiceExtensions
             services.ConfigureCors();
             services.ConfigureIISIntegration();
+
+            // configure logger
+            services.ConfigureLoggerService();
 
             services.AddControllers();
         }
@@ -50,6 +57,7 @@ namespace PitchAPI
 
             app.UseCors("CorsPolicy");
 
+            // forward proxy headers to the current request
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.All
