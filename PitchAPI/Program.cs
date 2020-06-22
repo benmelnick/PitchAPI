@@ -16,6 +16,7 @@ namespace PitchAPI
             CreateHostBuilder(args).Build().Run();
         }
 
+        // configure app configuration, logging, and dependency injection container
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

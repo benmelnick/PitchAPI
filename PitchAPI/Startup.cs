@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.HttpOverrides;
+
+using PitchAPI.Extensions;
 
 namespace PitchAPI
 {
@@ -23,8 +26,13 @@ namespace PitchAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // adds service to DI container
         public void ConfigureServices(IServiceCollection services)
         {
+            // call static configuration methods from ServiceExtensions
+            services.ConfigureCors();
+            services.ConfigureIISIntegration();
+
             services.AddControllers();
         }
 
@@ -37,6 +45,15 @@ namespace PitchAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
+
+            app.UseCors("CorsPolicy");
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.All
+            });
 
             app.UseRouting();
 
