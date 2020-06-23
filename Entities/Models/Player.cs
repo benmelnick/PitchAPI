@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
@@ -6,6 +7,7 @@ namespace Entities.Models
     [Table("PLAYERS")]
     public class Player
     {
+        [Key]
         public int Id { get; set; }
 
         [Column("first_name")]
