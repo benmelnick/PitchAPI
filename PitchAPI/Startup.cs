@@ -40,6 +40,12 @@ namespace PitchAPI
             // configure logger
             services.ConfigureLoggerService();
 
+            // configure MySQL DB
+            services.ConfigureMySqlContext(Configuration);
+
+            // configure repos
+            services.ConfigureRepositoryWrapper();
+
             services.AddControllers();
         }
 
